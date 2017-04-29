@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS `tbl_comment`;
+CREATE TABLE `tbl_comment` (  `co_id` int(11) unsigned NOT NULL AUTO_INCREMENT,  `co_text` text,  `co_created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `co_updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,  `co_deleted_at` timestamp NULL DEFAULT NULL,  `fk_t_id` int(10) unsigned DEFAULT NULL,  `fk_u_id` int(10) unsigned DEFAULT NULL,  PRIMARY KEY (`co_id`),  KEY `fk_t_id` (`fk_t_id`),  KEY `fk_u_id` (`fk_u_id`),  CONSTRAINT `tbl_comment_ibfk_1` FOREIGN KEY (`fk_t_id`) REFERENCES `tbl_todo` (`t_id`) ON UPDATE CASCADE,  CONSTRAINT `tbl_comment_ibfk_2` FOREIGN KEY (`fk_u_id`) REFERENCES `tbl_user` (`u_id`) ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `tbl_company`;
+CREATE TABLE `tbl_company` (  `c_id` int(11) unsigned NOT NULL AUTO_INCREMENT,  `c_name` varchar(100) DEFAULT NULL,  `c_created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `c_updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,  `c_deleted_at` timestamp NULL DEFAULT NULL,  PRIMARY KEY (`c_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `tbl_todo`;
+CREATE TABLE `tbl_todo` (  `t_id` int(11) unsigned NOT NULL AUTO_INCREMENT,  `t_name` varchar(100) DEFAULT NULL,  `t_description` text,  `t_created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `t_updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,  `t_deleted_at` timestamp NULL DEFAULT NULL,  `fk_u_id` int(10) unsigned DEFAULT NULL,  PRIMARY KEY (`t_id`),  KEY `fk_u_id` (`fk_u_id`),  CONSTRAINT `tbl_todo_ibfk_1` FOREIGN KEY (`fk_u_id`) REFERENCES `tbl_user` (`u_id`) ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `tbl_type`;
+CREATE TABLE `tbl_type` (  `ty_id` int(11) unsigned NOT NULL AUTO_INCREMENT,  `ty_identifier` varchar(30) DEFAULT NULL,  `ty_name` varchar(50) DEFAULT NULL,  `ty_added_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `ty_updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,  `ty_deleted_at` timestamp NULL DEFAULT NULL,  PRIMARY KEY (`ty_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `tbl_user`;
+CREATE TABLE `tbl_user` (  `u_id` int(11) unsigned NOT NULL AUTO_INCREMENT,  `u_email` varchar(255) DEFAULT NULL,  `u_firstName` varchar(255) DEFAULT NULL,  `u_lastName` varchar(255) DEFAULT NULL,  `u_created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `u_updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,  `u_deleted_at` timestamp NULL DEFAULT NULL,  `fk_c_id` int(11) unsigned DEFAULT NULL,  PRIMARY KEY (`u_id`),  KEY `fk_c_id` (`fk_c_id`),  CONSTRAINT `tbl_user_ibfk_1` FOREIGN KEY (`fk_c_id`) REFERENCES `tbl_company` (`c_id`) ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
