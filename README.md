@@ -9,4 +9,5 @@ Simple To-Do App
 4. Create database structure from ```db/structure.sql```
  
 **Technologies and Frameworks used:**
+
 - PHP
