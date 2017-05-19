@@ -10,11 +10,19 @@ $(document).ready(function(){
        r.onreadystatechange = function () {
            if (r.readyState !== 4 || r.status !== 200) return;
 
-           $("#successWrapper").addClass("show");
+           var successWrapper = $("#successWrapper");
+           var response = r.responseText;
+
+           var content = "<strong>Holy guacamole!</strong> You started the Docker Migration.<br/><br/>";
+           content += response.replace("\n", "<br/>");
+
+           $(".contentWrapper", successWrapper).html(content);
+
+           successWrapper.addClass("show");
 
            setTimeout(function(){
-               $("#successWrapper").removeClass("show");
-           }, 3000);
+               successWrapper.removeClass("show");
+           }, 5000);
 
        };
 

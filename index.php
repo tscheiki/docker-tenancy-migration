@@ -35,8 +35,8 @@ $where = empty($id) ? "" : " WHERE c_id = " . $id;
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<div class="content">
-				<strong>Holy guacamole!</strong> You started the Docker Migration.
+			<div class="contentWrapper">
+
 			</div>
 		</div>
 
