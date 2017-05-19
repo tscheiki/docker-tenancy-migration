@@ -29,7 +29,7 @@ $where = empty($id) ? "" : " WHERE c_id = " . $id;
 
 	<div class="container">
 		<h1 class="display-3">FH-Todo</h1>
-		<p class="lead">This is an awesome app where you can create todos.</p>
+		<p class="lead">This is an awesome app where you can see your todos.</p>
 
 		<div id="successWrapper" class="alert alert-success alert-dismissible fade" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -60,7 +60,7 @@ if ( $resultCompanies->num_rows > 0 ) {
 		echo '<p>';
 
 		echo '<button style="cursor:pointer;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#content'.$rowCompanies['c_id'].'" aria-expanded="false" aria-controls="content'.$rowCompanies['c_id'].'">';
-			echo 'Show Users';
+			echo 'Show Users and Todos';
 		echo '</button>';
 
 		echo '<button data-company-id="'.$rowCompanies['c_id'].'" type="button" class="btn btn-danger startDockerMigration" style="margin-left: 10px;cursor: pointer;">Start Docker Migration</button>';
