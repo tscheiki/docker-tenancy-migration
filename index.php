@@ -8,6 +8,9 @@
 
 require( 'connectDB.php' );
 
+$id = $_GET["id"];
+$where = empty($id) ? "" : " WHERE c_id = " . $id;
+
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +26,20 @@ require( 'connectDB.php' );
 </head>
 <body>
 <div class="jumbotron jumbotron-fluid">
+
 	<div class="container">
 		<h1 class="display-3">FH-Todo</h1>
 		<p class="lead">This is an awesome app where you can create todos.</p>
+
+		<div id="successWrapper" class="alert alert-success alert-dismissible fade" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<div class="content">
+				<strong>Holy guacamole!</strong> You started the Docker Migration.
+			</div>
+		</div>
+
 	</div>
 </div>
 
@@ -34,7 +48,7 @@ require( 'connectDB.php' );
 
 <?
 
-$sqlCompanies    = "SELECT c_id, c_name FROM tbl_company";
+$sqlCompanies    = "SELECT c_id, c_name FROM tbl_company" . $where;
 $resultCompanies = $conn->query( $sqlCompanies );
 
 if ( $resultCompanies->num_rows > 0 ) {
@@ -49,7 +63,7 @@ if ( $resultCompanies->num_rows > 0 ) {
 			echo 'Show Users';
 		echo '</button>';
 
-		echo '<button type="button" class="btn btn-danger" style="margin-left: 10px;cursor: pointer;">Start Docker Migration</button>';
+		echo '<button data-company-id="'.$rowCompanies['c_id'].'" type="button" class="btn btn-danger startDockerMigration" style="margin-left: 10px;cursor: pointer;">Start Docker Migration</button>';
 
 		echo '</p>';
 
@@ -151,5 +165,7 @@ $conn->close();
 <script src="js/jquery-3.1.1.slim.min.js"></script>
 <script src="js/tether-1.4.0.min.js"></script>
 <script src="js/bootstrap-4.0.0.min.js"></script>
+<script src="js/functions.js"></script>
+
 </body>
 </html>
