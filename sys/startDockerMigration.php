@@ -7,3 +7,7 @@
  */
 
 $companyId = $_POST["companyId"];
+
+$output = shell_exec(__DIR__ . '/../migration/startMigration.sh ' . $_SERVER['DOCUMENT_ROOT'] . ' ' . $companyId);
+
+die($output);

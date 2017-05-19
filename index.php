@@ -8,7 +8,7 @@
 
 require( 'connectDB.php' );
 
-$id = $_GET["id"];
+$id = isset($_GET["id"]) ? $_GET["id"] : "";
 $where = empty($id) ? "" : " WHERE c_id = " . $id;
 
 ?>
@@ -115,7 +115,7 @@ if ( $resultCompanies->num_rows > 0 ) {
 							$sqlComments    = "SELECT c_id, c_text FROM tbl_comment WHERE c_deleted_at IS NULL AND fk_t_id = " . $rowTodos["t_id"];
 							$resultComments = $conn->query( $sqlComments );
 
-							if ( $resultComments->num_rows > 0 ) {
+							if ( $resultComments && $resultComments->num_rows > 0 ) {
 
 							} else {
 								echo "No comments found";
