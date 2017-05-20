@@ -1,2 +1,4 @@
 .idea
-migration/dumps
+/migration/dumps
+/vendor/
+/migration/ansible/migrationPlaybook.retry
