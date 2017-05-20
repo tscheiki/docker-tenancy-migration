@@ -30,6 +30,8 @@ tbd
 
 7. Datenbank Dump einspielen
 
+8. Python necessary: sudo apt-get -y install python-simplejson
+
 **Technologies and Frameworks used:**
 
 - PHP

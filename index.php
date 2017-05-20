@@ -22,7 +22,10 @@ $where = empty($id) ? "" : " WHERE c_id = " . $id;
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
 	<title>FH-Todo</title>
+
 </head>
 <body>
 <div class="jumbotron jumbotron-fluid">
@@ -32,9 +35,6 @@ $where = empty($id) ? "" : " WHERE c_id = " . $id;
 		<p class="lead">This is an awesome app where you can see your todos.</p>
 
 		<div id="successWrapper" class="alert alert-success alert-dismissible fade" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
 			<div class="contentWrapper">
 
 			</div>

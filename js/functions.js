@@ -1,33 +1,42 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-    $(".startDockerMigration").on("click", function(){
-      var companyId = $(this).data("company-id");
+    $(".startDockerMigration").on("click", function () {
+        var startDockerMigrationBtn = $(this);
+        var companyId = startDockerMigrationBtn.data("company-id");
 
-       var r = new XMLHttpRequest();
-       r.open("POST", "../sys/startDockerMigration.php", true);
-       r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // Show spinner
+        startDockerMigrationBtn.html("<i class='fa fa-spin fa-spinner'></i>");
 
-       r.onreadystatechange = function () {
-           if (r.readyState !== 4 || r.status !== 200) return;
+        // Show funny text on top
+        var successWrapper = $("#successWrapper");
+        var successWrapperContent = $(".contentWrapper", successWrapper);
 
-           var successWrapper = $("#successWrapper");
-           var response = r.responseText;
+        successWrapperContent.html("<strong>Holy guacamole!</strong> You started the Docker Migration. I'll inform you when everything is migrated.");
+        successWrapper.addClass("show");
 
-           var content = "<strong>Holy guacamole!</strong> You started the Docker Migration.<br/><br/>";
-           content += response.replace("\n", "<br/>");
+        var r = new XMLHttpRequest();
+        r.open("POST", "../migration/createMigration.php", true);
+        r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-           $(".contentWrapper", successWrapper).html(content);
+        r.onreadystatechange = function () {
+            if (r.readyState !== 4 || r.status !== 200) return;
 
-           successWrapper.addClass("show");
+            var response = r.responseText;
 
-           setTimeout(function(){
-               successWrapper.removeClass("show");
-           }, 5000);
+            setTimeout(function(){
 
-       };
+                var newDomain = "http://c00"+companyId+".r2o";
+                var successContent = "<strong>Oh yeah!</strong> ";
+                successContent += "Everything successfully migrated. Take a look here: <a target='_blank' href='"+newDomain+"'>"+newDomain+"</a>";
 
-       r.send("companyId="+companyId);
+                successWrapperContent.html(successContent);
+                startDockerMigrationBtn.html("Successfully migrated");
 
-   });
+            }, 10000);
+        };
+
+        r.send("companyId=" + companyId);
+
+    });
 
 });

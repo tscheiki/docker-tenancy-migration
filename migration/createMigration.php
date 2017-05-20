@@ -9,13 +9,13 @@
 require( __DIR__ . '/../connectDB.php' );
 require( __DIR__ . '/MigrationService.php' );
 
-$id = $argv[1];
+$companyId = $_POST["companyId"];
 
 $config = [
 	'keyTable'    => [
 		'tableName' => 'tbl_company',
 		'keyName'   => 'c_id',
-		'key'      => $id
+		'key'       => $companyId
 	],
 	'exportOrder' => [
 		1 => [
@@ -36,6 +36,20 @@ $config = [
 	]
 ];
 
+// 1. Create Database Dumps
+
 $migrationService = new MigrationService( $conn );
 $migrationService->setConfig( $config );
 $migrationService->start();
+
+// 2. Start Ansible and follow the playbook
+
+$runAnsibleCommand = "";
+$runAnsibleCommand .= "/usr/local/bin/ansible-playbook -i ";
+$runAnsibleCommand .= __DIR__ . "/ansible/hosts -s ";
+$runAnsibleCommand .= __DIR__ . "/ansible/migrationPlaybook.yml ";
+$runAnsibleCommand .= "--extra-vars 'company_id=".$companyId."'";
+
+$result = shell_exec($runAnsibleCommand);
+
+echo $result;
