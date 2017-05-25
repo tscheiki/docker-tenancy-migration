@@ -1,2 +1,2 @@
 [local]
-127.0.0.1
+192.168.1.12 	ansible_connection=ssh	ansible_user=rbole	ansible_sudo_pass=tester12

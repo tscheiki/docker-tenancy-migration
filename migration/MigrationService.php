@@ -8,7 +8,6 @@
  */
 class MigrationService {
 
-	const FILENAME_CREATE_TABLES = "tables.sql";
 	const FILENAME_INSERT_DATA = "data.sql";
 
 	/**
@@ -27,6 +26,8 @@ class MigrationService {
 	 * @var array
 	 */
 	private $keys = [];
+
+	private $file;
 
 	/**
 	 * MigrationService constructor.
@@ -49,8 +50,12 @@ class MigrationService {
 		error_reporting( 0 );
 		set_time_limit( 0 );
 
+		$this->file = $this->openFile( self::FILENAME_INSERT_DATA );
+
 		$this->createTableMigration();
 		$this->createDataMigration();
+
+		$this->closeFile( $this->file );
 
 		echo "Successfully created dump!";
 	}
@@ -60,15 +65,13 @@ class MigrationService {
 	 */
 	private function createTableMigration() {
 
-		$file = $this->openFile( self::FILENAME_CREATE_TABLES );
-
 		$allTables = $this->conn->query( "SHOW TABLES" );
 
 		if ( $allTables->num_rows > 0 ) {
 
 			while ( $rowTables = $allTables->fetch_array() ) {
 				$tableName = $rowTables[0];
-				fwrite( $file, "\n\nDROP TABLE IF EXISTS `" . $tableName . "`;\n" );
+				fwrite( $this->file, "\n\nDROP TABLE IF EXISTS `" . $tableName . "`;\n" );
 
 				$res = $this->conn->query( "SHOW CREATE TABLE `" . $tableName . "`" );
 
@@ -76,12 +79,11 @@ class MigrationService {
 					$create    = $res->fetch_array();
 					$create[1] .= ";";
 					$line      = str_replace( "\n", "", $create[1] );
-					fwrite( $file, $line . "\n" );
+					fwrite( $this->file, $line . "\n" );
 				}
 			}
 		}
 
-		$this->closeFile( $file );
 	}
 
 	/**
@@ -89,7 +91,7 @@ class MigrationService {
 	 */
 	private function createDataMigration() {
 
-		$where = empty( $this->config['keyTable']['key'] ) ? '' : " WHERE " . $this->config['keyTable']['keyName'] . " = " .$this->config['keyTable']['key']. ";";
+		$where = !is_int( $this->config['keyTable']['key'] ) ? '' : " WHERE " . $this->config['keyTable']['keyName'] . " = " .$this->config['keyTable']['key']. ";";
 
 		// First loop over keyTable
 		$sqlKeyTable    = "SELECT " . $this->config['keyTable']['keyName'] . " FROM " . $this->config['keyTable']['tableName'] . $where;
@@ -103,17 +105,14 @@ class MigrationService {
 
 				$this->keys = [];
 
-				$file = $this->openFile( "c" . $this->clientId . '_' . self::FILENAME_INSERT_DATA );
-
 				// get key table data
-				$this->getKeyTableDataInserts( $file );
+				$this->getKeyTableDataInserts();
 
 				// Loop over all other tables
-				$this->getExportOrderDataInserts( $file );
-
-				$this->closeFile( $file );
+				$this->getExportOrderDataInserts();
 
 			}
+
 		}
 
 	}
@@ -121,18 +120,18 @@ class MigrationService {
 	/**
 	 * @param $file
 	 */
-	private function getKeyTableDataInserts( $file ) {
+	private function getKeyTableDataInserts() {
 		$tableData = $this->conn->query( "SELECT * FROM `" . $this->config['keyTable']['tableName'] . "` WHERE " . $this->config['keyTable']['keyName'] . ' = ' . $this->clientId );
 		while ( $data = $tableData->fetch_assoc() ) {
 			$line = $this->createInsertLine( $this->config['keyTable']['tableName'], $data );
-			fwrite( $file, $line . "\n" );
+			fwrite( $this->file, $line . "\n" );
 		}
 	}
 
 	/**
 	 * @param $file
 	 */
-	private function getExportOrderDataInserts( $file ) {
+	private function getExportOrderDataInserts() {
 		foreach ( $this->config['exportOrder'] as $key => $value ) {
 
 			$whereQuery = $this->getWhereQuery( $value["relation"] );
@@ -143,7 +142,7 @@ class MigrationService {
 			if ( $dataRowsCount > 0 ) {
 				while ( $data = $tableData->fetch_assoc() ) {
 					$line = $this->createInsertLine( $value["tableName"], $data );
-					fwrite( $file, $line . "\n" );
+					fwrite( $this->file, $line . "\n" );
 				}
 			}
 		}
@@ -226,7 +225,10 @@ class MigrationService {
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;";
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+CREATE DATABASE IF NOT EXISTS `fh_todo` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE fh_todo;";
 
 		fwrite( $file, $sqlStart . "\n\n" );
 

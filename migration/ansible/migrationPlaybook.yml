@@ -1,6 +1,82 @@
 ---
 - hosts: local
-  tasks:
-   - name: Create migration
-     shell: ''
+  gather_facts: False
 
+  tasks:
+    - name: install python 2
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+    - name: create directories if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      with_items:
+        - "{{ dest_path }}core/app/import"
+        - "{{ dest_path }}core/app/scripts"
+        - "{{ dest_path }}core/app/template"
+        - "{{ dest_path }}core/app/src"
+        - "{{ dest_path }}core/php7"
+
+    - name: Copy app .env
+      copy:
+        src={{ app_path }}migration/core/app/.env
+        dest={{ dest_path}}core/app
+        mode=0775
+
+    - name: Copy php7 folder content
+      copy:
+        src={{ app_path }}migration/core/php7/
+        dest={{ dest_path}}core/php7
+        mode=0775
+
+    - name: Copy scripts folder content
+      copy:
+        src={{ app_path }}migration/core/app/scripts/
+        dest={{ dest_path}}core/app/scripts
+        mode=0775
+
+    - name: Copy template folder content
+      copy:
+        src={{ app_path }}migration/core/app/template/
+        dest={{ dest_path}}core/app/template
+        mode=0775
+
+    - name: Copy data dump
+      copy:
+        src={{ app_path }}migration/dumps/data.sql
+        dest={{ dest_path }}core/app/import
+        force=yes
+        mode=0775
+
+    - name: Copy app css folder
+      copy:
+        src={{ app_path }}css
+        dest={{ dest_path}}core/app/src
+        mode=0775
+
+    - name: Copy app fonts folder
+      copy:
+        src={{ app_path }}fonts
+        dest={{ dest_path}}core/app/src
+        mode=0775
+
+    - name: Copy app js folder
+      copy:
+        src={{ app_path }}js
+        dest={{ dest_path}}core/app/src
+        mode=0775
+
+    - name: Copy app files
+      copy:
+        src={{ item }}
+        dest={{ dest_path}}core/app/src
+        mode=0775
+      with_items:
+        - "{{ app_path }}connectDB.php"
+        - "{{ app_path }}index.php"
+
+    - name: Start container
+      raw: 'sudo {{ dest_path}}core/app/scripts/newClient.sh 00{{ company_id }} c00{{ company_id }}.r2o'
