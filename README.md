@@ -7,6 +7,7 @@ Simple To-Do App
 2. Make new host entry and vhost for this app
 3. Create new MySQL Database and edit your credentials in ```connectDB.php``` (.env should be added for this)
 4. Create database structure from ```db/structure.sql```
+5. tbd
  
 **Technologies and Frameworks used:**
 
