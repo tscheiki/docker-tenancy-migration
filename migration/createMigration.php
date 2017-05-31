@@ -42,7 +42,6 @@ $migrationService = new MigrationService( $conn );
 $migrationService->setConfig( $config );
 $migrationService->start();
 
-die("DONE");
 // 2. Start Ansible and follow the playbook
 
 $explodeDir = explode('/migration',__DIR__);
