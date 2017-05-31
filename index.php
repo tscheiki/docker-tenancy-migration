@@ -63,7 +63,9 @@ if ( $resultCompanies->num_rows > 0 ) {
 			echo 'Show Users and Todos';
 		echo '</button>';
 
-		echo '<button data-company-id="'.$rowCompanies['c_id'].'" type="button" class="btn btn-danger startDockerMigration" style="margin-left: 10px;cursor: pointer;">Start Docker Migration</button>';
+		if( isset($runsOnContainer) && !$runsOnContainer ) {
+		    echo '<button data-company-id="'.$rowCompanies['c_id'].'" type="button" class="btn btn-danger migrationBtn" style="margin-left: 10px;cursor: pointer;"></button>';
+		}
 
 		echo '</p>';
 

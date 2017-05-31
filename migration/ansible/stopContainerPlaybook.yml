@@ -1,0 +1,7 @@
+---
+- hosts: local
+  gather_facts: False
+
+  tasks:
+    - name: Stop container
+      raw: 'sudo {{ dest_path}}core/app/scripts/clear.sh 00{{ company_id }}'
