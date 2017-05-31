@@ -9,7 +9,7 @@
 require( __DIR__ . '/../connectDB.php' );
 require( __DIR__ . '/MigrationService.php' );
 
-$companyId = !empty($_POST["companyId"]) ? $_POST["companyId"] : 2;
+$companyId = !empty($_POST["companyId"]) ? $_POST["companyId"] : 1;
 
 $config = [
 	'keyTable'    => [

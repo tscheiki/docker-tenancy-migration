@@ -213,6 +213,12 @@ class MigrationService {
 	 * @return resource
 	 */
 	private function openFile( $fileName ) {
+
+		$pathToDumpsFolder = __DIR__ . '/dumps';
+		if (!file_exists($pathToDumpsFolder)) {
+			mkdir($pathToDumpsFolder, 0777, true);
+		}
+
 		$file = fopen( __DIR__ . '/dumps/' . $fileName, "w" );
 
 		$sqlStart = "
