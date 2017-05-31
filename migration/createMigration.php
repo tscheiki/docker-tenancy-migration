@@ -9,7 +9,7 @@
 require( __DIR__ . '/../connectDB.php' );
 require( __DIR__ . '/MigrationService.php' );
 
-$companyId = !empty($_POST["companyId"]) ? $_POST["companyId"] : 1;
+$companyId = !empty($_POST["companyId"]) ? intval($_POST["companyId"]) : 1;
 
 $config = [
 	'keyTable'    => [
@@ -42,6 +42,7 @@ $migrationService = new MigrationService( $conn );
 $migrationService->setConfig( $config );
 $migrationService->start();
 
+die("DONE");
 // 2. Start Ansible and follow the playbook
 
 $explodeDir = explode('/migration',__DIR__);
