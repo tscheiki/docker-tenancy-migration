@@ -44,13 +44,13 @@ $migrationService->start();
 
 // 2. Start Ansible and follow the playbook
 
-$explodeDir = explode('migration',__DIR__);
+$explodeDir = explode('/migration',__DIR__);
 
 $runAnsibleCommand = "";
 $runAnsibleCommand .= "/usr/local/bin/ansible-playbook -i ";
 $runAnsibleCommand .= __DIR__ . "/ansible/hosts -s ";
 $runAnsibleCommand .= __DIR__ . "/ansible/migrationPlaybook.yml ";
-$runAnsibleCommand .= "--extra-vars 'company_id=".$companyId." dest_path=/home/rbole/ app_path=".$explodeDir[0]."'";
+$runAnsibleCommand .= "--extra-vars 'company_id=".$companyId." dest_path=/home/rbole/ app_path=".$explodeDir[0]."/'";
 
 $result = shell_exec($runAnsibleCommand);
 
