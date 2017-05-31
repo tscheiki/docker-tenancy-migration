@@ -22,15 +22,16 @@ services:
    - data-volume-db:/var/lib/mysql
    - /home/rbole/core/app/import:/docker-entrypoint-initdb.d
   restart: always
-  env_file:
-   - ../.env
+  environment:
+   MYSQL_ROOT_PASSWORD: 1234567
  phpmyadmin:
   image: phpmyadmin/phpmyadmin:latest
   links:
    - db
   ports:
    - "%PORT_MYSQL%:80"
-  env_file:
-   - ../.env
+  environment:
+   MYSQL_USERNAME: root
+   MYSQL_ROOT_PASSWORD: 1234567
 volumes:
  data-volume-db:
