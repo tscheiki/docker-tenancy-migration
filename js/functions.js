@@ -14,7 +14,7 @@ $(document).ready(function () {
     // Check container states
     migrationBtn.each(function () {
         var companyId = $(this).data("company-id");
-        if (localStorage.getItem(companyId) === null || localStorage.getItem(companyId) === false) {
+        if (localStorage.getItem(companyId) === null || localStorage.getItem(companyId) === "false") {
             $(this).text(startContent).removeClass(stopContainerClass).addClass(startContainerClass);
         } else {
             $(this).text(stopContent).removeClass(startContainerClass).addClass(stopContainerClass);
@@ -68,7 +68,7 @@ $(document).ready(function () {
 
                 } else if (startDockerMigrationBtn.hasClass(stopContainerClass)){
 
-                    localStorage.setItem(companyId, true);
+                    localStorage.setItem(companyId, false);
                     startDockerMigrationBtn.text(startContent).removeClass(stopContainerClass).addClass(startContainerClass);
 
                 }

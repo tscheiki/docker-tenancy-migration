@@ -24,7 +24,7 @@ $where = empty($id) ? "" : " WHERE c_id = " . $id;
 	<link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
 
-	<title>FH-Todo</title>
+	<title>FH-Todo - <?=$_SERVER["HTTP_HOST"];?></title>
 
 </head>
 <body>
