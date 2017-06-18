@@ -27,6 +27,20 @@ Demo
 -
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/10YUTf3MMu0/0.jpg)](https://www.youtube.com/watch?v=10YUTf3MMu0 "Migration from a traditional multi-tenant solution to container based solution")
  
+How does it work?
+-
+1. Open traditional multi-tenant solution (clone this repository, setup vHost, create DB)
+2. Click on "Start Docker Migration"  
+3. Database data for this client gets stored in a dump file located at ```migration/dumps/data.sql``` (Export order and relations are defined in ```migration/createMigration.php```)  
+4. Ansible playbook gets started ```migration/ansible/migrationPlaybook.yml```  
+4.1 Copies needed files (scripts, dump) to remote machine that is defined in ```migration/ansible/hosts```   
+4.2 Starts script ```migration/core/app/scripts/newClient.sh``` on remote machine  
+4.2.1 Docker container gets created  
+4.2.2 MySQL Server gets created  
+4.2.3 Dump gets inserted  
+4.2.4 Link to client container gets set in nginx config
+5. Container starts and returns new client url
+
 **Technologies and Frameworks used:**
 
 - PHP
