@@ -41,7 +41,8 @@ How does it work?
 4.2.4 Link to client container gets set in nginx config
 5. Container starts and returns new client url
 
-**DB used in our app**  
+**DB used in our app:**
+    
 https://github.com/tscheiki/docker-tenancy-migration/blob/master/docs/dbScheme.pdf
 
 **Technologies and Frameworks used:**
